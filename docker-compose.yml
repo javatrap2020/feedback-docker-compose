@@ -2,9 +2,8 @@ version: '3.7'
 
 services:
   feedback-server:
-    build: .
-    #image: javatrap/it-cluster-feedback-frontend-b
-    container_name: "it-cluster-feedback-frontend-b"
+    image: javatrap/it-cluster-feedback-backend
+    container_name: "it-cluster-feedback-backend"
     ports:
       - "8080:8080"
     restart: always
@@ -29,8 +28,8 @@ services:
 
 
   feedback-client:
-    image: javatrap/it-cluster-feedback-frontend-a
-    container_name: "it-cluster-feedback-frontend-a"
+    image: javatrap/it-cluster-feedback-frontend
+    container_name: "it-cluster-feedback-frontend"
     ports:
       - "4200:4200"
     restart: always
@@ -42,7 +41,7 @@ services:
     networks:
       - frontend
     tty: true
-    #command: bash /root/src/feedback-client.bash
+
 
   db_m:
     image: mongo:latest
@@ -57,22 +56,13 @@ services:
       MONGO_HOST: db_m
     hostname: db_m
     volumes:
-      #- ./data/db:/data/db
-      #- ./data/db:/data/db
       - db_m-data:/data/db
-    #links:
-      #- db_m:/data/db
-      #- db_m-data:/var/lib/mongodb/
-      #- volumes:
-        #  - ./data/db:/var/lib/mongodb/data/db
-        #command:
-        #  /mongo-seed/import.sh
     networks:
       - backend
       - frontend
-    tty: true
+    #tty: true
     #command: bash /root/src/db_m.bash
-    #command: mongo -u root -p pass --authenticationDatabase admin
+    command: mongo -u root -p pass --authenticationDatabase admin
     command: mongo -u root -p pass --authenticationDatabase feedback
 
 volumes:
