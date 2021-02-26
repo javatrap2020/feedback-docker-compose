@@ -21,8 +21,9 @@ services:
       MONGO_HOST: db_m
     hostname: feedback-server
     networks:
-      - backend
-      - frontend
+      #- backend
+      #- frontend
+      - app-network
     tty: true
     command: bash /root/src/feedback-server.bash
 
@@ -33,13 +34,12 @@ services:
     ports:
       - "4200:4200"
     restart: always
-    depends_on:
-      - feedback-server
     hostname: feedback-client
     links:
       - feedback-server
     networks:
-      - frontend
+      #- frontend
+      - app-network
     tty: true
 
 
@@ -58,16 +58,17 @@ services:
     volumes:
       - db_m-data:/data/db
     networks:
-      - backend
-      - frontend
-    #tty: true
-    #command: bash /root/src/db_m.bash
-    command: mongo -u root -p pass --authenticationDatabase admin
-    command: mongo -u root -p pass --authenticationDatabase feedback
+      #- backend
+      #- frontend
+      - app-network
+    tty: true
 
 volumes:
   db_m-data:
+    driver: bridge
 
 networks:
-  backend:
-  frontend:
+  #backend:
+  #frontend:
+  app-network:
+    driver: bridge
