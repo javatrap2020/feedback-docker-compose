@@ -23,7 +23,6 @@ services:
     networks:
       - backend
       - frontend
-      #- app-network
     tty: true
     command: bash /root/src/feedback-server.bash
 
@@ -39,7 +38,6 @@ services:
       - feedback-server
     networks:
       - frontend
-      #- app-network
     tty: true
 
 
@@ -60,16 +58,10 @@ services:
     networks:
       - backend
       - frontend
-      #- app-network
-    tty: true
-    #command: mongo -u root -p pass --authenticationDatabase feedback
 
 volumes:
   db_m-data:
-   #driver: bridge
 
 networks:
   backend:
   frontend:
-  #app-network:
-   #driver: bridge
